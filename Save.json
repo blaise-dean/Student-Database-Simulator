@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Taly",
+        "GPA": 4.0,
+        "ID": 5905,
+        "courses": [
+            [
+                "Calculus 1",
+                "Pre-Medical",
+                "Spanish",
+                "Computer Science",
+                "English 1",
+                "Algebra 2"
+            ]
+        ]
+    }
+]
