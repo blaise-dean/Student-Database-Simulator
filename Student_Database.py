@@ -1,13 +1,15 @@
 import random
 import json
 
-#random courses options
+#lists
 coursesList = ['English 1', 'English 2', 'Algebra 1', 'Algebra 2', 'Calculus 1', 'Calculus 2',
             'Art', 'Spanish', 'Computer Science', 'Engineering', 'Pre-Medical', 'History',
             'Spanish 2'
            ]
 
 studentData = []
+
+studentList = []
 
 #blueprint for creating a student
 class Student:
@@ -39,25 +41,34 @@ class Student:
                 print("Invalid Input.")
             
 
-#assign random courses
-
-studentList = []
-
 #Main Loop
 while True:
     
     #student user creation
     prompt = input("Would you like to:\n1. Create a student\n2. Search a student\n3. Update student GPA\n4. Remove a student\n5. List students\n6. Load data\n7. Save and exit\n").lower()
     if prompt == '1':
+
         studentName = input("What is the students name? ")
+
+        #Check if user already in database
+        for student in studentList:
+            while studentName == student.name:
+                studentName = input("Student already in database, try again. ")
+
         studentGPA = float(input("What is the users gpa? "))
         studentID = int(input("What is the students ID? "))
+
+        if studentName == any(studentList):
+            while studentName == any(studentList):
+                studentName = input("Name is taken. Try again: ")
 
         studentCourses = []
 
         studentCourses.append(random.sample(coursesList, 6))
 
+        #Creates student instance
         student = Student(studentGPA, studentCourses, studentID, studentName)
+
         studentList.append(student)
     
     #student search
@@ -87,6 +98,7 @@ while True:
             else:
                 print("Student does not exist.")
                 continue
+
     #show list
     elif prompt == '5':
         for student in studentList:
@@ -96,7 +108,7 @@ while True:
     elif prompt == '6':
         with open('Save.json', 'r') as file:
             loadData = json.load(file)
-            for s in loadData:
+        for s in loadData:
                 studentList.append(Student(s['GPA'], s['courses'], s['ID'], s['name']))
                 print("Student data has been loaded!")
 
@@ -108,6 +120,7 @@ while True:
     else:
         print("Invalid input")
 
+#adds student data to the list
 for student in studentList:
     studentData.append({
     "name": student.name,
@@ -117,6 +130,7 @@ for student in studentList:
     })
 
 
+#writes data to file
 with open('Save.json', 'w') as file:
     json.dump(studentData, file, indent = 4)
         
